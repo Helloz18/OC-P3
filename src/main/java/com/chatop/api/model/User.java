@@ -1,4 +1,6 @@
 package com.chatop.api.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -26,13 +28,25 @@ public class User {
     private String name;
 
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name="created_at", columnDefinition = "TIMESTAMP")
+    @JsonProperty("created_at")
     private Timestamp createdAt;
 
     @Column(name="updated_at", columnDefinition = "TIMESTAMP")
+    @JsonProperty("updated_at")
     private Timestamp updatedAt;
+
+    public User() {
+    }
+
+    public User(String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+    }
 
     public int getId() {
         return id;
