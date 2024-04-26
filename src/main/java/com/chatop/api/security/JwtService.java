@@ -6,10 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwsHeader;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -19,8 +16,12 @@ import java.time.temporal.ChronoUnit;
 public class JwtService {
     private JwtEncoder jwtEncoder;
 
-    public JwtService(JwtEncoder jwtEncoder) {
+    private JwtDecoder jwtDecoder;
+
+    public JwtService(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
+
         this.jwtEncoder = jwtEncoder;
+        this.jwtDecoder = jwtDecoder;
     }
 
     public String generateToken(Authentication authentication) {
@@ -35,6 +36,10 @@ public class JwtService {
         return this.jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
     }
 
+    public String extractUsername(String token) {
+        Jwt jwt = jwtDecoder.decode(token);
+        return jwt.getSubject();
+    }
 
 
 }
