@@ -3,21 +3,15 @@ package com.chatop.api.service;
 import com.chatop.api.model.User;
 import com.chatop.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.ExpressionException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Service
 public class UserService implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
-
 
     private final BCryptPasswordEncoder passwordEncoder;
 
