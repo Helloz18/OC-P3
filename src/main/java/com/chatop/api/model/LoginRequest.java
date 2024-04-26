@@ -20,18 +20,22 @@ import java.util.Collection;
 public class LoginRequest implements UserDetails {
     private String username;
     private String password;
+    private String login;
 
 
     public LoginRequest() {
     }
 
-    public LoginRequest(String username, String password) {
-        this.username = username;
+    public LoginRequest(String login, String password) {
+        this.login = login;
         this.password = password;
     }
 
     public String getUsername() {
-        return username;
+        return login;
+    }
+    public String getLogin() {
+        return login;
     }
 
     public String getPassword() {

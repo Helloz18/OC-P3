@@ -1,5 +1,7 @@
 package com.chatop.api.controller;
 
+import com.chatop.api.dto.ModelConverter;
+import com.chatop.api.dto.UserDTO;
 import com.chatop.api.model.LoginRequest;
 import com.chatop.api.model.Token;
 import com.chatop.api.model.User;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+
 @RestController
 @Tag(name = "Auth controller", description = "Endpoint used to log in the application and to register a new user.")
 @RequestMapping("/api/auth")
@@ -32,28 +36,44 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> getToken(@RequestBody LoginRequest loginRequest) {
 
-        // Création d'un jeton d'authentification avec les informations de connexion
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        // Si l'authentification réussit, générez le jeton JWT
-        if (authentication.isAuthenticated()) {
-            String token = jwtService.generateToken(authentication);
-            Token t = new Token();
-            t.setToken(token);
-            return ResponseEntity.ok(t);
-        } else {
-            System.out.println("ici");
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        if(loginRequest.getLogin().isEmpty() || loginRequest.getPassword().isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Erreur");
+        } else {
+            Token t = generateToken(loginRequest.getUsername(), loginRequest.getPassword());
+            return ResponseEntity.ok(t);
         }
     }
 
 
     @PostMapping("/register")
-    public User createToken(User user) throws Exception {
-        return userService.createUser(user);
+    public ResponseEntity<?> registerUser(@RequestBody final UserDTO userDTO) throws Exception {
+        System.out.println(userDTO.getEmail());
+        if(userDTO.getName() == null || userDTO.getEmail() == null || userDTO.getPassword() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        } else {
+            User user = ModelConverter.toUser(userDTO);
+            user.setCreatedAt(Instant.now().toString());
+            userService.createUser(user);
+        }
+        Token t = generateToken(userDTO.getEmail(), userDTO.getPassword());
+        return ResponseEntity.ok(t);
+    }
+
+    private Token generateToken(String email, String password) {
+        Token t = new Token();
+        // Création d'un jeton d'authentification avec les informations de connexion
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+        // Si l'authentification réussit, générez le jeton JWT
+        if (authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(authentication);
+            t.setToken(token);
+            return t;
+        }
+        return t;
     }
 
 }
