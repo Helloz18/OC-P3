@@ -69,7 +69,7 @@ public class SpringSecurityConfig {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers( "/auth/register", "/auth/login", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers( "/api/auth/register", "/api/auth/login", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
