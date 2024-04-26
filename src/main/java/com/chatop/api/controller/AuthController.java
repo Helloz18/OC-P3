@@ -9,6 +9,7 @@ import com.chatop.api.model.User;
 import com.chatop.api.security.JwtService;
 import com.chatop.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,9 @@ public class AuthController {
     @GetMapping("/me")
     @Operation(summary = "Get information of the connected user.",
             description = "The user must be connected as we need the token in the header.")
-    public ResponseEntity<?> getConnectedUser(@RequestHeader("Authorization") String bearer) {
+    public ResponseEntity<?> getConnectedUser(
+            @Parameter(description = "Bearer token", example="Bearer eyJhbGciOJIUzI1NiJ9...")
+            @RequestHeader("Authorization") String bearer) {
         if(bearer == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
         } else {
