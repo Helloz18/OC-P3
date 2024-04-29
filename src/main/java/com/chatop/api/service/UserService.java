@@ -1,5 +1,8 @@
 package com.chatop.api.service;
 
+import com.chatop.api.dto.DtoConverter;
+import com.chatop.api.dto.ModelConverter;
+import com.chatop.api.dto.UserDTO;
 import com.chatop.api.model.User;
 import com.chatop.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,11 @@ public class UserService implements IUserService {
 
 
     @Override
-    public User createUser(User user) throws Exception {
+    public User createUser(UserDTO userDTO) throws Exception {
+        User user = ModelConverter.toUserCreate(userDTO);
         // the email must be unique for each user
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new Exception("The email provided may be registered already: " + user.getEmail());
+        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+            throw new Exception("The email provided may be registered already: " + userDTO.getEmail());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -32,9 +36,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getUserById(int id) throws Exception {
-        return userRepository.findById(id).orElseThrow(() ->
+    public UserDTO getUserById(int id) throws Exception {
+        User user = userRepository.findById(id).orElseThrow(() ->
                 new Exception("No user registered with this id : " + id));
+        return DtoConverter.toUserDTO(user);
     }
 
     @Override

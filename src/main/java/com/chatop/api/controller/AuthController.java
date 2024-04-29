@@ -55,8 +55,7 @@ public class AuthController {
         if(userDTO.getName() == null || userDTO.getEmail() == null || userDTO.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            User user = ModelConverter.toUserCreate(userDTO);
-            userService.createUser(user);
+            userService.createUser(userDTO);
         }
         Token t = createToken(userDTO.getEmail(), userDTO.getPassword());
         return ResponseEntity.ok(t);
