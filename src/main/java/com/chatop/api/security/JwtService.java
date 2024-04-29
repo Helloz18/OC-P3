@@ -1,8 +1,5 @@
 package com.chatop.api.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -41,5 +38,8 @@ public class JwtService {
         return jwt.getSubject();
     }
 
-
+    public String getToken() {
+        Jwt principal = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal.getTokenValue();
+    }
 }
