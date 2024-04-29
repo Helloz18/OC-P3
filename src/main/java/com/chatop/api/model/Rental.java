@@ -34,6 +34,20 @@ public class Rental {
     @Column(name = "updated_at")
     private String updatedAt;
 
+    public Rental(String name, int surface, long price, String picture, String description){
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.picture = picture;
+        this.description = description;
+    }
+
+    public Rental(String name, int surface, long price, String description){
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.description = description;
+    }
 
     public int getId() {
         return id;
