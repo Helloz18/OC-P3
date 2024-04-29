@@ -1,6 +1,6 @@
 package com.chatop.api.model;
 
-public class ResponseError {
+public class ResponseMessage {
 
     public final String message;
 
@@ -8,7 +8,7 @@ public class ResponseError {
         return message;
     }
 
-    public ResponseError(final String message) {
+    public ResponseMessage(final String message) {
         this.message = message;
     }
 }
