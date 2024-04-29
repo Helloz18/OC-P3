@@ -3,7 +3,7 @@ package com.chatop.api.controller;
 import com.chatop.api.dto.ModelConverter;
 import com.chatop.api.dto.UserDTO;
 import com.chatop.api.model.LoginRequest;
-import com.chatop.api.model.ResponseError;
+import com.chatop.api.model.ResponseMessage;
 import com.chatop.api.model.Token;
 import com.chatop.api.model.User;
 import com.chatop.api.security.JwtService;
@@ -37,10 +37,10 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Log in the application.",
-            description = "Give a valid login and password, then a token will be generated.")
+            description = "Give a valid email and password, then a token will be generated.")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        if(userService.getUserByEmail(loginRequest.getLogin()) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseError("error"));
+        if(userService.getUserByEmail(loginRequest.getEmail()) == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage("error"));
         } else {
             Token t = createToken(loginRequest.getUsername(), loginRequest.getPassword());
             return ResponseEntity.ok(t);

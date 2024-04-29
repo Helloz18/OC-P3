@@ -21,23 +21,23 @@ import java.util.Collection;
 public class LoginRequest implements UserDetails {
     @JsonIgnore
     private String username;
-    private String login;
+    private String email;
     private String password;
 
 
     public LoginRequest() {
     }
 
-    public LoginRequest(String login, String password) {
-        this.login = login;
+    public LoginRequest(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
     public String getUsername() {
-        return login;
+        return email;
     }
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
