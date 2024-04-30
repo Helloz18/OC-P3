@@ -26,6 +26,12 @@ public class Message {
     @Column(name = "updated_at")
     private String updatedAt;
 
+    public Message(String message, User user, Rental rental) {
+        this.message = message;
+        this.user = user;
+        this.rental = rental;
+    }
+
     public int getId() {
         return id;
     }

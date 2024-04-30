@@ -1,7 +1,9 @@
 package com.chatop.api.dto;
 
+import com.chatop.api.model.Message;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.User;
+import com.chatop.api.repository.RentalRepository;
 import com.chatop.api.repository.UserRepository;
 import com.chatop.api.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,14 @@ import java.time.Instant;
 @Component
 public class ModelConverter {
 
-    @Autowired
-    private static JwtService jwtService;
-
-    @Autowired
     private static UserRepository userRepository;
+
+    private static RentalRepository rentalRepository;
+
+    public ModelConverter(UserRepository userRepository, RentalRepository rentalRepository) {
+        this.userRepository = userRepository;
+        this.rentalRepository = rentalRepository;
+    }
 
     public static User toUserCreate(final UserDTO userDTO) {
         User user = new User(userDTO.getEmail(), userDTO.getName(), userDTO.getPassword());
@@ -56,5 +61,14 @@ public class ModelConverter {
         }
         rental.setUpdatedAt(Instant.now().toString());
         return rental;
+    }
+
+    public static Message toMessageCreate(final MessageDTO messageDTO) {
+        User user = userRepository.findById(messageDTO.getUserId()).orElseThrow();
+        Rental rental = rentalRepository.findById(messageDTO.getRentalId()).orElseThrow();
+        Message message = new Message(
+                messageDTO.getMessage(), user, rental);
+        message.setCreatedAt(Instant.now().toString());
+        return message;
     }
 }
