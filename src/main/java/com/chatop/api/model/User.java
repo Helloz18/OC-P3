@@ -1,6 +1,7 @@
 package com.chatop.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -21,6 +22,11 @@ public class User {
     @Column(name = "id")
     private int id;
 
+    @Schema(
+            description = "email of the user",
+            name = "email",
+            type = "string",
+            example = "test@test.com")
     @Column(name = "email", nullable = false)
     private String email;
 

@@ -21,7 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Tag(name = "Auth controller", description = "Endpoint used to log in the application and to register a new user.")
+@Tag(name = "Auth controller", description = "Controller used to log in the application and to register a new user.")
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -50,7 +50,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(summary = "Register in the application. The user is saved in the database.",
-            description = "Give a new login, name and password, then a token will be generated.")
+            description = "Give a new email, name and password, then a token will be generated.")
     public ResponseEntity<?> registerUser(@RequestBody final UserDTO userDTO) throws Exception {
         if(userDTO.getName() == null || userDTO.getEmail() == null || userDTO.getPassword() == null
         || userDTO.getName().isEmpty() || userDTO.getEmail().isEmpty() || userDTO.getPassword().isEmpty()) {
