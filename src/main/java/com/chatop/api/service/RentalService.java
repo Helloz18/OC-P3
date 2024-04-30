@@ -3,6 +3,7 @@ package com.chatop.api.service;
 import com.chatop.api.dto.DtoConverter;
 import com.chatop.api.dto.ModelConverter;
 import com.chatop.api.dto.RentalDTO;
+import com.chatop.api.dto.UpdateRentalDTO;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.Rentals;
 import com.chatop.api.model.User;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,9 +60,8 @@ public class RentalService implements IRentalService {
     }
 
     @Override
-    public Rental updateRental(int id, RentalDTO rentalDTO) {
-        Rental rental = ModelConverter.toRentalUpdate(rentalDTO);
-        return rental;
-
+    public Rental updateRental(int id, UpdateRentalDTO updateRentalDTO) {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        return rentalRepository.save(ModelConverter.toRentalUpdate(rental, updateRentalDTO));
     }
 }

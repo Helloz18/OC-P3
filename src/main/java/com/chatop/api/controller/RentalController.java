@@ -1,11 +1,12 @@
 package com.chatop.api.controller;
 
-import com.chatop.api.dto.DtoConverter;
 import com.chatop.api.dto.RentalDTO;
+import com.chatop.api.dto.UpdateRentalDTO;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.Rentals;
 import com.chatop.api.model.ResponseMessage;
 import com.chatop.api.service.RentalService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -90,9 +91,10 @@ public class RentalController {
         return ResponseEntity.ok(rental);
     }
 
+    @Operation(summary = "Update an existing rental with name, price, surface and description")
     @PutMapping("{id}")
-    public ResponseEntity<ResponseMessage> updateRental(@PathVariable("id") final int id, @RequestBody RentalDTO rentalDTO) throws Exception {
-
+    public ResponseEntity<ResponseMessage> updateRental(@PathVariable("id") final int id, @RequestBody UpdateRentalDTO updateRentalDTO) throws Exception {
+        rentalService.updateRental(id, updateRentalDTO);
 
 
         return ResponseEntity.ok(new ResponseMessage("Rental Updated !"));

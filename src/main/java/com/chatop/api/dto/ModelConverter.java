@@ -41,12 +41,20 @@ public class ModelConverter {
         return rental;
     }
 
-    public static Rental toRentalUpdate(final RentalDTO rentalDTO) {
-        Rental rental =
-                new Rental(rentalDTO.getName(),
-                           rentalDTO.getSurface(),
-                           rentalDTO.getPrice(),
-                           rentalDTO.getDescription());
+    public static Rental toRentalUpdate(final Rental rental, final UpdateRentalDTO updateRentalDTO) {
+        if(!rental.getName().equals(updateRentalDTO.getName())) {
+            rental.setName(updateRentalDTO.getName());
+        }
+        if(rental.getSurface() != updateRentalDTO.getSurface()) {
+            rental.setSurface(updateRentalDTO.getSurface());
+        }
+        if(rental.getPrice() != updateRentalDTO.getPrice()) {
+            rental.setPrice(updateRentalDTO.getPrice());
+        }
+        if(!rental.getDescription().equals(updateRentalDTO.getDescription())) {
+            rental.setDescription(updateRentalDTO.getDescription());
+        }
+        rental.setUpdatedAt(Instant.now().toString());
         return rental;
     }
 }

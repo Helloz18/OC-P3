@@ -1,6 +1,7 @@
 package com.chatop.api.service;
 
 import com.chatop.api.dto.RentalDTO;
+import com.chatop.api.dto.UpdateRentalDTO;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.Rentals;
 
@@ -15,6 +16,6 @@ public interface IRentalService {
 
     Rental createRental(RentalDTO rentalDTO);
 
-    Rental updateRental(int id, RentalDTO rentalDTO);
+    Rental updateRental(int id, UpdateRentalDTO updateRentalDTO);
 
 }
