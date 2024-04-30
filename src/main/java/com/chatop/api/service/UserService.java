@@ -36,10 +36,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDTO getUserById(int id) throws Exception {
+    public User getUserById(int id) throws Exception {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new Exception("No user registered with this id : " + id));
-        return DtoConverter.toUserDTO(user);
+        user.setCreatedAt(user.getCreatedAt().toString());
+        if(user.getUpdatedAt() != null) {
+            user.setUpdatedAt(user.getUpdatedAt().toString());
+        }
+        return user;
     }
 
     @Override

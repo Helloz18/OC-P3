@@ -7,7 +7,7 @@ public interface IUserService {
 
     User createUser(UserDTO userDTO) throws Exception;
 
-    UserDTO getUserById(int id) throws Exception;
+    User getUserById(int id) throws Exception;
 
     User getUserByEmail(String email);
 

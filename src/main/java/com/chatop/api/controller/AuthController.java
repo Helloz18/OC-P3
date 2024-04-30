@@ -52,7 +52,8 @@ public class AuthController {
     @Operation(summary = "Register in the application. The user is saved in the database.",
             description = "Give a new login, name and password, then a token will be generated.")
     public ResponseEntity<?> registerUser(@RequestBody final UserDTO userDTO) throws Exception {
-        if(userDTO.getName() == null || userDTO.getEmail() == null || userDTO.getPassword() == null) {
+        if(userDTO.getName() == null || userDTO.getEmail() == null || userDTO.getPassword() == null
+        || userDTO.getName().isEmpty() || userDTO.getEmail().isEmpty() || userDTO.getPassword().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
             userService.createUser(userDTO);
