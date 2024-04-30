@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,22 +54,34 @@ public class RentalController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage(" empty"));
         }
         try {
-            // unique file name
-            String fileName = System.currentTimeMillis() + "_" + pictureFile.getOriginalFilename();
-            Path filePath = Paths.get(pictureFileDirPath, fileName);
-
-            // save file in directory
-            Files.copy(pictureFile.getInputStream(), filePath);
-            System.out.println(filePath.toString());
-            String urlToSave = pictureFileGetPath + fileName;
+            String urlToSave = createUrlOfPicture(pictureFile);
 
             RentalDTO rentalDTO = new RentalDTO(name, surface, price, urlToSave, description);
             rentalService.createRental(rentalDTO);
 
             return ResponseEntity.ok(new ResponseMessage("Rental created !"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
         }
+    }
+
+    /**
+     * A file send when posting a rental will be saved in a folder with a unique filename
+     * the path to the location of the file will be saved in the database
+     * To avoid issue right now, the file is saved in the angular assets/pictures/ folder
+     * @param pictureFile
+     * @return the path to the file
+     * @throws IOException
+     */
+    private String createUrlOfPicture(MultipartFile pictureFile) throws IOException {
+        // unique file name
+        String fileName = System.currentTimeMillis() + "_" + pictureFile.getOriginalFilename();
+        Path filePath = Paths.get(pictureFileDirPath, fileName);
+
+        // save file in directory
+        Files.copy(pictureFile.getInputStream(), filePath);
+
+        return pictureFileGetPath + fileName;
     }
 
     @GetMapping("{id}")
