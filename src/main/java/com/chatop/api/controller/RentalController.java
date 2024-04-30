@@ -36,11 +36,7 @@ public class RentalController {
 
     @GetMapping("")
     public ResponseEntity<Rentals> getAll() {
-            List<Rental> rentalList = rentalService.getAllRentals();
-            List<RentalDTO> rs = new ArrayList<RentalDTO>();
-            rentalList.forEach(rental -> rs.add(DtoConverter.toRentalDTO(rental)));
-        Rentals rentals = new Rentals(rs);
-
+        Rentals rentals = rentalService.getAllRentals();
         return ResponseEntity.ok(rentals);
     }
 

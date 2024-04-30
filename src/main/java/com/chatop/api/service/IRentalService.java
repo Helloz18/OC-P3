@@ -2,13 +2,14 @@ package com.chatop.api.service;
 
 import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.model.Rental;
+import com.chatop.api.model.Rentals;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IRentalService {
 
-    List<Rental> getAllRentals();
+    Rentals getAllRentals();
 
     Rental getRentalById(int id) throws Exception;
 
