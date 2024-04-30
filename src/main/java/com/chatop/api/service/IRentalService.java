@@ -12,7 +12,7 @@ public interface IRentalService {
 
     Rentals getAllRentals();
 
-    Rental getRentalById(int id) throws Exception;
+    RentalDTO getRentalById(int id) throws Exception;
 
     Rental createRental(RentalDTO rentalDTO);
 

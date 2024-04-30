@@ -2,7 +2,6 @@ package com.chatop.api.controller;
 
 import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.dto.UpdateRentalDTO;
-import com.chatop.api.model.Rental;
 import com.chatop.api.model.Rentals;
 import com.chatop.api.model.ResponseMessage;
 import com.chatop.api.service.RentalService;
@@ -86,17 +85,25 @@ public class RentalController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Rental> getRental(@PathVariable int id) throws Exception {
-        Rental rental = rentalService.getRentalById(id);
-        return ResponseEntity.ok(rental);
+    public ResponseEntity<RentalDTO> getRental(@PathVariable int id) throws Exception {
+        RentalDTO rentalDTO = rentalService.getRentalById(id);
+        return ResponseEntity.ok(rentalDTO);
     }
 
-    @Operation(summary = "Update an existing rental with name, price, surface and description")
+    @Operation(summary = "Update an existing rental with name, surface, price and description")
     @PutMapping("{id}")
-    public ResponseEntity<ResponseMessage> updateRental(@PathVariable("id") final int id, @RequestBody UpdateRentalDTO updateRentalDTO) throws Exception {
-        rentalService.updateRental(id, updateRentalDTO);
-
-
+    public ResponseEntity<?> updateRental(@PathVariable("id") final int id,
+                                          @RequestParam("name") String name,
+                                          @RequestParam("surface") int surface,
+                                          @RequestParam("price") long price,
+                                          @RequestParam("description") String description
+    ) {
+        try {
+            UpdateRentalDTO updateRentalDTO = new UpdateRentalDTO(name, surface, price, description);
+            rentalService.updateRental(id, updateRentalDTO);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
+        }
         return ResponseEntity.ok(new ResponseMessage("Rental Updated !"));
     }
 }

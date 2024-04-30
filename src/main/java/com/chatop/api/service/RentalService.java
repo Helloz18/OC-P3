@@ -43,9 +43,10 @@ public class RentalService implements IRentalService {
     }
 
     @Override
-    public Rental getRentalById(int id) throws Exception {
-        return rentalRepository.findById(id).orElseThrow(() ->
+    public RentalDTO getRentalById(int id) throws Exception {
+        Rental rental = rentalRepository.findById(id).orElseThrow(() ->
                 new Exception("No rental registered with this id : " + id));
+        return DtoConverter.toRentalDTO(rental);
     }
 
     @Override
