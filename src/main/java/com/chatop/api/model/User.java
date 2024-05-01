@@ -18,6 +18,11 @@ import java.sql.Timestamp;
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class User {
 
+    @Schema(
+            description = "Id of the user",
+            name = "id",
+            type = "int",
+            example = "5")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,6 +36,11 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Schema(
+            description = "name of the user",
+            name = "name",
+            type = "string",
+            example = "test TEST")
     @Column(name = "name", nullable = false)
     private String name;
 
