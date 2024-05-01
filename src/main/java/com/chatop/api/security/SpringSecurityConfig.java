@@ -58,6 +58,9 @@ public class SpringSecurityConfig implements WebMvcConfigurer {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    @Value("${picture.file.path}")
+    private String filePath;
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
@@ -84,7 +87,7 @@ public class SpringSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/api/pictures/**")
-                .addResourceLocations("classpath:pictures/");
+                .addResourceLocations("file:"+filePath);
     }
 
     /**
