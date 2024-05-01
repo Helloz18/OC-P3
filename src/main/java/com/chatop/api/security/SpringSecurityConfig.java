@@ -61,6 +61,9 @@ public class SpringSecurityConfig implements WebMvcConfigurer {
     @Value("${picture.file.path}")
     private String filePath;
 
+    @Value("${image.endpoint.path}")
+    private String imageEndpointPath;
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
@@ -72,7 +75,7 @@ public class SpringSecurityConfig implements WebMvcConfigurer {
         return http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers( "/api/pictures/**", "/api/auth/register", "/api/auth/login", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers( imageEndpointPath+"**", "/api/auth/register", "/api/auth/login", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
@@ -86,7 +89,7 @@ public class SpringSecurityConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/api/pictures/**")
+        registry.addResourceHandler( imageEndpointPath+"**")
                 .addResourceLocations("file:"+filePath);
     }
 

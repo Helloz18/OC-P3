@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.activation.FileTypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +41,9 @@ public class RentalController {
 
     @Value("${api.server.url}")
     private String apiUrl;
+
+    @Value("${image.endpoint.path}")
+    private String imageEndpointPath;
 
     @Autowired
     private RentalService rentalService;
@@ -116,7 +117,7 @@ public class RentalController {
         Files.copy(pictureFile.getInputStream(), filePath);
 
         // save url path in db
-        String dbPath = apiUrl +"/api/pictures/"+ fileName;
+        String dbPath = apiUrl + imageEndpointPath + fileName;
 
         return dbPath;
     }
