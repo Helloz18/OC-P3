@@ -6,8 +6,6 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
-import io.swagger.v3.oas.models.PathItem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +16,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,7 +31,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.sql.DataSource;
 
 @Configuration
 @OpenAPIDefinition(
@@ -55,16 +50,13 @@ import javax.sql.DataSource;
         bearerFormat = "JWT",
         scheme = "bearer"
 )
-public class SpringSecurityConfig {
+public class SpringSecurityConfig implements WebMvcConfigurer {
 
     /**
      * Jwt secret key.
      */
     @Value("${jwt.secret}")
     private String jwtSecret;
-
-//    @Autowired
-//    private DataSource dataSource;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -74,22 +66,26 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers( "/api/auth/register", "/api/auth/login", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers( "/api/pictures/**", "/api/auth/register", "/api/auth/login", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
                 .formLogin(Customizer.withDefaults())
-              //  .httpBasic(Customizer.withDefaults()).build();
                 .build();
     }
 
-//    @Bean
-//    WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().requestMatchers("C:/Users/hf281/Documents/04-OC/P3/P3-Full-Stack-portail-locataire/src/assets/pictures");
-//    }
+    /**
+     * Allow the frontend to access the pictures folder in resources.
+     * @param registry
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/api/pictures/**")
+                .addResourceLocations("classpath:pictures/");
+    }
 
     /**
      * managing CORS policy
@@ -120,24 +116,24 @@ public class SpringSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Use the jwtSecret key to encode the token
+     * @return
+     */
     @Bean
     public JwtEncoder jwtEncoder() {
         return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtSecret.getBytes()));
     }
 
+    /**
+     * Decode the Token with the jwtSecret key
+     * @return
+     */
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKeySpec secretKey = new SecretKeySpec(this.jwtSecret.getBytes(), 0, this.jwtSecret.getBytes().length,"RSA");
         return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
     }
-
-//    @Bean
-//    public JdbcUserDetailsManager jdbcUserDetailsManager() {
-//        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-//        manager.setUsersByUsernameQuery("SELECT email AS username, password, true FROM users WHERE email=?");
-//      //  manager.setAuthenticationManager(AuthenticationManager authenticationManager);
-//        return manager;
-//    }
 
     /**
      * Use our LoginRequest (Custom UserDetails) as provider for authentication.
