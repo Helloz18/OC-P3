@@ -1,6 +1,7 @@
 package com.chatop.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,12 +22,20 @@ import java.util.Collection;
 public class LoginRequest implements UserDetails {
     @JsonIgnore
     private String username;
+
+    @Schema(
+            description = "email of the user",
+            name = "email",
+            type = "string",
+            example = "test@test.com")
     private String email;
+
+    @Schema(
+            description = "password of the user",
+            name = "password",
+            type = "string",
+            example = "test!31")
     private String password;
-
-
-    public LoginRequest() {
-    }
 
     public LoginRequest(String email, String password) {
         this.email = email;

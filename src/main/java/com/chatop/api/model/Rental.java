@@ -1,5 +1,6 @@
 package com.chatop.api.model;
 
+import com.chatop.api.utils.TimestampAdapter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -119,8 +120,7 @@ public class Rental {
         return createdAt;
     }
     public void setCreatedAt(String createdAt) {
-        String createdAtConvert = this.convertTimestampFromOpenApi(createdAt);
-        this.createdAt = Timestamp.valueOf(createdAtConvert);
+        this.createdAt = TimestampAdapter.convertTimestampFromOpenApi(createdAt);
     }
 
     public Timestamp getUpdatedAt() {
@@ -128,14 +128,7 @@ public class Rental {
     }
 
     public void setUpdatedAt(String updatedAt) {
-        String updatedAtConvert = this.convertTimestampFromOpenApi(updatedAt);
-        this.updatedAt = Timestamp.valueOf(updatedAtConvert);
+        this.updatedAt = TimestampAdapter.convertTimestampFromOpenApi(updatedAt);
 
-    }
-
-    private String convertTimestampFromOpenApi(String openApiTimestamp) {
-        String convert = openApiTimestamp.replace('T', ' ');
-        convert = convert.replace('Z', ' ');
-        return convert;
     }
 }

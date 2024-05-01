@@ -5,8 +5,6 @@ import com.chatop.api.model.Rental;
 import com.chatop.api.model.User;
 import com.chatop.api.repository.RentalRepository;
 import com.chatop.api.repository.UserRepository;
-import com.chatop.api.security.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

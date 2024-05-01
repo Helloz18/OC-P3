@@ -1,5 +1,6 @@
 package com.chatop.api.dto;
 
+import com.chatop.api.utils.TimestampAdapter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -68,14 +69,7 @@ public class UpdateRentalDTO {
     }
 
     public void setUpdatedAt(String updatedAt) {
-        String updatedAtConvert = this.convertTimestampFromOpenApi(updatedAt);
-        this.updatedAt = Timestamp.valueOf(updatedAtConvert);
+        this.updatedAt = TimestampAdapter.convertTimestampFromOpenApi(updatedAt);
 
-    }
-
-    private String convertTimestampFromOpenApi(String openApiTimestamp) {
-        String convert = openApiTimestamp.replace('T', ' ');
-        convert = convert.replace('Z', ' ');
-        return convert;
     }
 }

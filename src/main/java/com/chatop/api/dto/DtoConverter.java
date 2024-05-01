@@ -1,7 +1,6 @@
 package com.chatop.api.dto;
 
 import com.chatop.api.model.Rental;
-import com.chatop.api.model.User;
 import org.springframework.stereotype.Component;
 
 @Component
