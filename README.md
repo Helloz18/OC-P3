@@ -2,6 +2,8 @@ API for frontend ChâTop
 ---
 This project uses Java 21 with Maven
 
+<strong>Use branch develop</strong>
+
 Install the project
 ---
 - Clone the repository
