@@ -1,7 +1,5 @@
 package com.chatop.api.controller;
 
-import com.chatop.api.dto.ModelConverter;
-import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.dto.UserDTO;
 import com.chatop.api.model.LoginRequest;
 import com.chatop.api.model.ResponseMessage;

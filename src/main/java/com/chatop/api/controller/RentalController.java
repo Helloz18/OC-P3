@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.activation.FileTypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,11 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @Tag(name = "Rental controller", description = "Controller used to manage rentals. A connected user can " +
@@ -41,8 +41,8 @@ public class RentalController {
     @Value("${picture.file.path}")
     private String pictureFileDirPath;
 
-    @Value("${angular.file.path}")
-    private String pictureFileGetPath;
+    @Value("${api.server.url}")
+    private String apiUrl;
 
     @Autowired
     private RentalService rentalService;
@@ -51,8 +51,11 @@ public class RentalController {
     @Operation(summary = "Get the list of all rentals stored in the database.",
             description = "The list returns RentalDTO objects." )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Rentals, that represents a list of RentalDTO."),
-            @ApiResponse(responseCode = "401", description = "")
+            @ApiResponse(responseCode = "200", description = "Rentals, that represents a list of RentalDTO.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Rentals.class))),
+            @ApiResponse(responseCode = "401", description = "",
+                    content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<Rentals> getAll() {
         Rentals rentals = rentalService.getAllRentals();
@@ -62,17 +65,20 @@ public class RentalController {
     @PostMapping(value="", consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Create a rental that will be saved in the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Rental created"),
-            @ApiResponse(responseCode = "401", description = "")
+            @ApiResponse(responseCode = "200", description = "Rental created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseMessage.class))),
+            @ApiResponse(responseCode = "401", description = "",
+                    content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<?> createRental(
-            @Parameter(description = "name", example="My rental")
+            @Parameter(description = "name of the rental", example="My rental")
             @RequestParam("name") String name,
-            @Parameter(description = "surface", example="80")
+            @Parameter(description = "surface in m2", example="80")
             @RequestParam("surface") int surface,
-            @Parameter(description = "price", example="500")
+            @Parameter(description = "price in €", example="500")
             @RequestParam("price") long price,
-            @Parameter(description = "picture")
+            @Parameter(description = "picture, max size = 10MB")
             @RequestParam("picture")  MultipartFile pictureFile,
             @Parameter(description = "description", example="Long text describing the rental.")
             @RequestParam("description") String description
@@ -109,7 +115,10 @@ public class RentalController {
         // save file in directory
         Files.copy(pictureFile.getInputStream(), filePath);
 
-        return pictureFileGetPath + fileName;
+        // save url path in db
+        String dbPath = apiUrl +"/api/pictures/"+ fileName;
+
+        return dbPath;
     }
 
     @GetMapping("{id}")
@@ -119,10 +128,12 @@ public class RentalController {
             @ApiResponse(responseCode = "200", description = "a RentalDTO.",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RentalDTO.class))),
-            @ApiResponse(responseCode = "401", description = "")
+            @ApiResponse(responseCode = "401", description = "",
+                    content = @Content(mediaType = "application/json"))
     })
-
-    public ResponseEntity<RentalDTO> getRental(@PathVariable int id) throws Exception {
+    public ResponseEntity<RentalDTO> getRental(
+            @Parameter(description = "id of the Rental", example="10")
+            @PathVariable int id) throws Exception {
         RentalDTO rentalDTO = rentalService.getRentalById(id);
         return ResponseEntity.ok(rentalDTO);
     }
@@ -134,17 +145,17 @@ public class RentalController {
             @ApiResponse(responseCode = "200", description = "Rental updated",
                          content = @Content(mediaType = "application/json",
                                 schema = @Schema(implementation = ResponseMessage.class))),
-            @ApiResponse(responseCode = "401", description = "")
+            @ApiResponse(responseCode = "401", description = "",
+                    content = @Content(mediaType = "application/json"))
     })
-
     public ResponseEntity<?> updateRental(
             @Parameter(description = "id of the rental", example="1")
             @PathVariable("id") final int id,
-            @Parameter(description = "name", example="My rental")
+            @Parameter(description = "name of the rental", example="My rental")
             @RequestParam("name") String name,
-            @Parameter(description = "surface", example="80")
+            @Parameter(description = "surface in m2", example="80")
             @RequestParam("surface") int surface,
-            @Parameter(description = "price", example="500")
+            @Parameter(description = "price in €", example="500")
             @RequestParam("price") long price,
             @Parameter(description = "description", example="Long text describing the rental.")
             @RequestParam("description") String description

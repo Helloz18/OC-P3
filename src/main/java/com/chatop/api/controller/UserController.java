@@ -1,7 +1,5 @@
 package com.chatop.api.controller;
 
-import com.chatop.api.dto.UserDTO;
-import com.chatop.api.model.ResponseMessage;
 import com.chatop.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

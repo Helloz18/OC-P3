@@ -2,22 +2,59 @@ package com.chatop.api.dto;
 
 import com.chatop.api.utils.TimestampAdapter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.sql.Timestamp;
 
 public class RentalDTO {
 
+    @Schema(
+            description = "Id of the rental",
+            name = "id",
+            type = "int",
+            example = "10")
     private int id;
+
+    @Schema(
+            description = "name of the rental",
+            name = "name",
+            type = "string",
+            example = "My rental")
     private String name;
 
+    @Schema(
+            description = "surface of the rental in m2",
+            name = "surface",
+            type = "int",
+            example = "80")
     private int surface;
 
+    @Schema(
+            description = "price of the rental in €",
+            name = "price",
+            type = "long",
+            example = "500")
     private long price;
 
+    @Schema(
+            description = "path to the picture of a rental",
+            name = "picture",
+            type = "string",
+            example = "http://my-images.com/123.jpg")
     private String picture;
 
+    @Schema(
+            description = "description of the rental",
+            name = "description",
+            type = "string",
+            example = "My rental is the best.")
     private String description;
 
+    @Schema(
+            description = "id of the owner of the rental",
+            name = "owner_id",
+            type = "int",
+            example = "5")
     @JsonProperty("owner_id")
     private int ownerId;
 
