@@ -61,9 +61,13 @@ public class ModelConverter {
         return rental;
     }
 
-    public static Message toMessageCreate(final MessageDTO messageDTO) {
-        User user = userRepository.findById(messageDTO.getUserId()).orElseThrow();
-        Rental rental = rentalRepository.findById(messageDTO.getRentalId()).orElseThrow();
+    public static Message toMessageCreate(final MessageDTO messageDTO) throws Exception {
+        User user = userRepository.findById(messageDTO.getUserId())
+                .orElseThrow(() -> new Exception("No user registered with this id : " + messageDTO.getUserId())
+        );
+        Rental rental = rentalRepository.findById(messageDTO.getRentalId()).orElseThrow(
+                () -> new Exception("No rental registered with this id : " + messageDTO.getRentalId())
+        );
         Message message = new Message(
                 messageDTO.getMessage(), user, rental);
         message.setCreatedAt(Instant.now().toString());

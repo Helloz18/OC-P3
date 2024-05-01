@@ -14,7 +14,7 @@ public class MessageService implements IMessageService {
     private MessageRepository messageRepository;
 
     @Override
-    public Message createMessage(MessageDTO messageDTO) {
+    public Message createMessage(MessageDTO messageDTO) throws Exception {
         Message message = ModelConverter.toMessageCreate(messageDTO);
         return messageRepository.save(message);
     }

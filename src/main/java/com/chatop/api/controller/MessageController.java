@@ -2,7 +2,7 @@ package com.chatop.api.controller;
 
 import com.chatop.api.dto.MessageDTO;
 import com.chatop.api.model.ResponseMessage;
-import com.chatop.api.service.MessageService;
+import com.chatop.api.service.IMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     @Autowired
-    private MessageService messageService;
+    private IMessageService messageService;
 
     @PostMapping("")
     @Operation(summary = "Send a message to a User about a Rental.",

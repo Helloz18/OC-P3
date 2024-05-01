@@ -6,7 +6,7 @@ import com.chatop.api.model.ResponseMessage;
 import com.chatop.api.model.Token;
 import com.chatop.api.model.User;
 import com.chatop.api.security.JwtService;
-import com.chatop.api.service.UserService;
+import com.chatop.api.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,7 +35,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
 
     @PostMapping("/login")
@@ -49,7 +49,7 @@ public class AuthController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseMessage.class)))
     })
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception {
         if(userService.getUserByEmail(loginRequest.getEmail()) == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage("error"));
         } else {
@@ -114,7 +114,7 @@ public class AuthController {
     })
     public ResponseEntity<?> getConnectedUser(
             @Parameter(description = "Bearer token", example="Bearer eyJhbGciOJIUzI1NiJ9...")
-            @RequestHeader("Authorization") String bearer) {
+            @RequestHeader("Authorization") String bearer) throws Exception {
         if(bearer == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
         } else {

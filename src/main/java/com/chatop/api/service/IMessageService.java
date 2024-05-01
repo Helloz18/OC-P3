@@ -5,5 +5,5 @@ import com.chatop.api.model.Message;
 
 public interface IMessageService {
 
-    Message createMessage(MessageDTO messageDTO);
+    Message createMessage(MessageDTO messageDTO) throws Exception;
 }

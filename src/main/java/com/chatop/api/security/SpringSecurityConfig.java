@@ -84,7 +84,7 @@ public class SpringSecurityConfig implements WebMvcConfigurer {
     }
 
     /**
-     * Allow the frontend to access the pictures folder in resources.
+     * Allow the frontend to access the pictures folder defined in filePath.
      * @param registry
      */
     @Override

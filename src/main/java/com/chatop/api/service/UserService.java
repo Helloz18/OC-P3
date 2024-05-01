@@ -47,7 +47,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+    public User getUserByEmail(String email) throws Exception {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new Exception("No user registered with this email : " + email));
     }
 }

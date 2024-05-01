@@ -9,9 +9,6 @@ import java.sql.Timestamp;
 
 /**
  * Entity User needs three NOT NULL fields to be created: email, name, password
- * This entity has two fields to follow creation: createdAt and modification: updatedAt of a user
- * These fields are stored in Timestamp in DB as YYYY-MM-DD HH:mm:ss
- * BUT openApi awaits 'YYYY-MM-DDTHH:mm:ssZ'
  */
 
 @Entity

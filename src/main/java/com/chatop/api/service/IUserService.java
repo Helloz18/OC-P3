@@ -9,6 +9,6 @@ public interface IUserService {
 
     User getUserById(int id) throws Exception;
 
-    User getUserByEmail(String email);
+    User getUserByEmail(String email) throws Exception;
 
 }

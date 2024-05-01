@@ -11,16 +11,10 @@ import com.chatop.api.repository.RentalRepository;
 import com.chatop.api.repository.UserRepository;
 import com.chatop.api.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RentalService implements IRentalService {
@@ -50,19 +44,21 @@ public class RentalService implements IRentalService {
     }
 
     @Override
-    public Rental createRental(RentalDTO rentalDTO) {
+    public Rental createRental(RentalDTO rentalDTO) throws Exception {
         Rental rental = ModelConverter.toRentalCreate(rentalDTO);
         String token = jwtService.getToken();
         String username = jwtService.extractUsername(token);
-        User user = userRepository.findByEmail(username).orElseThrow();
+        User user = userRepository.findByEmail(username).orElseThrow(
+                () -> new Exception("No user found with this email : " + username));
         rental.setUser(user);
 
         return rentalRepository.save(rental);
     }
 
     @Override
-    public Rental updateRental(int id, UpdateRentalDTO updateRentalDTO) {
-        Rental rental = rentalRepository.findById(id).orElseThrow();
+    public Rental updateRental(int id, UpdateRentalDTO updateRentalDTO) throws Exception {
+        Rental rental = rentalRepository.findById(id).orElseThrow(
+                () -> new Exception("No rental registered with this id : " + id));
         return rentalRepository.save(ModelConverter.toRentalUpdate(rental, updateRentalDTO));
     }
 }

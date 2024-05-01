@@ -5,17 +5,14 @@ import com.chatop.api.dto.UpdateRentalDTO;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.Rentals;
 
-import java.util.List;
-import java.util.Optional;
-
 public interface IRentalService {
 
     Rentals getAllRentals();
 
     RentalDTO getRentalById(int id) throws Exception;
 
-    Rental createRental(RentalDTO rentalDTO);
+    Rental createRental(RentalDTO rentalDTO) throws Exception;
 
-    Rental updateRental(int id, UpdateRentalDTO updateRentalDTO);
+    Rental updateRental(int id, UpdateRentalDTO updateRentalDTO) throws Exception;
 
 }

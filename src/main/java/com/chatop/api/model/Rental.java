@@ -51,13 +51,6 @@ public class Rental {
         this.description = description;
     }
 
-    public Rental(String name, int surface, long price, String description){
-        this.name = name;
-        this.surface = surface;
-        this.price = price;
-        this.description = description;
-    }
-
     public int getId() {
         return id;
     }

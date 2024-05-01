@@ -1,6 +1,6 @@
 package com.chatop.api.controller;
 
-import com.chatop.api.service.UserService;
+import com.chatop.api.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +20,7 @@ import com.chatop.api.model.User;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get the user by its id.",

@@ -66,13 +66,6 @@ public class RentalDTO {
 
     public RentalDTO() {}
 
-    public RentalDTO(String name, int surface, long price, String description) {
-        this.name = name;
-        this.surface = surface;
-        this.price = price;
-        this.description = description;
-    }
-
     public RentalDTO(String name, int surface, long price, String picture, String description) {
         this.name = name;
         this.surface = surface;
@@ -81,22 +74,12 @@ public class RentalDTO {
         this.description = description;
     }
 
-    public RentalDTO(String name, int surface, long price, String picture, String description, int ownerId) {
-        this.name = name;
-        this.surface = surface;
-        this.price = price;
-        this.picture = picture;
-        this.description = description;
-        this.ownerId = ownerId;
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id =
-                id;
+        this.id = id;
     }
 
     public String getName() {

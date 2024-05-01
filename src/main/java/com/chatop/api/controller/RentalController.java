@@ -4,7 +4,7 @@ import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.dto.UpdateRentalDTO;
 import com.chatop.api.model.Rentals;
 import com.chatop.api.model.ResponseMessage;
-import com.chatop.api.service.RentalService;
+import com.chatop.api.service.IRentalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -46,7 +46,7 @@ public class RentalController {
     private String imageEndpointPath;
 
     @Autowired
-    private RentalService rentalService;
+    private IRentalService rentalService;
 
     @GetMapping("")
     @Operation(summary = "Get the list of all rentals stored in the database.",
