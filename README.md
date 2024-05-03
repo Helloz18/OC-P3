@@ -17,13 +17,13 @@ CREATE database your_database_name;
 USE your_database_name;
 
 
-Copy the content of the <strong>chatop_tables.sql</strong> file that you can fin in resources folder.
+Copy the content of the <strong>chatop_tables.sql</strong> file that you can find in resources folder.
 
 
 
 Paste it in the MySQL terminal, then press enter.
 
-Verify that the tables exists in the database with the command in the terminal:
+Verify that the tables exist in the database with the command in the terminal:
 
 SHOW TABLES;
 
@@ -31,10 +31,15 @@ SHOW TABLES;
 You should have four tables: 
 
 +----------------+
+
 | messages       |
+
 | rentals        |
+
 | users          |
+
 | users_seq      |
+
 +----------------+
 
 
