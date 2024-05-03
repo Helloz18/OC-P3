@@ -68,5 +68,5 @@ Access project
 ---
 
 - Server port is 3001
-- You can access openApi through [Swagger](http://localhost:3001/swagger-ui/index.html#/)
+- You can access openApi documentation through [Swagger](http://localhost:3001/swagger-ui/index.html#/)
 
